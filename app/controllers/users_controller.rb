@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  #before_action では only: で指定されたアクションに対して、事前処理	
+  before_action :require_user_logged_in, only: [:index, :show]
   def index
     @pagy, @users = pagy(User.order(id: :desc), items: 25)#←ページネーション適応最大1ページに25件。User.order(id: :desc)はIDの降順にユーザー一覧を取得
   end
