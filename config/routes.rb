@@ -9,4 +9,5 @@ Rails.application.routes.draw do
   
   get 'signup', to: 'users#new'#登録ページをデフォルトのusers/newではなくusers/signupにかえる
   resources :users, only: [:index, :show, :create]#←必要な動作に絞っている。newは違うページ名にしてつくったので作成しない
+  resources :microposts, only: [:create, :destroy]##←必要な動作に絞っている。
 end

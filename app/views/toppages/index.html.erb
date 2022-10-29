@@ -1,6 +1,20 @@
 <% if logged_in? %><!--これから作成-->
-  <p>ログイン完了ユーザ: <%= current_user.name %></p><!--current_userはこれから作成-->
+  <div class="row">
+    <aside class="col-sm-4"><!--micropost用のフォーム-->
+      <%= form_with(model: @micropost) do |f| %>
+        <div class="mb-3">
+          <%= f.text_area :content, class: 'form-control', rows: 5 %>
+        </div>
+        <%= f.submit 'Post', class: 'btn btn-primary w-100' %>
+      <% end %>
+    </aside>
+    <div class="col-sm-8">
+　　　<!--app/views/microposts/_microposts.html.erbをrenderで表示-->
+      <%= render 'microposts/microposts', microposts: @microposts %>
+    </div>
+  </div>
 <% else %>
+
   <div class="bg-secondary p-3 p-sm-5 my-4 rounded">
     <div class="text-center text-white">
       <h1>Welcome to the Microposts</h1>
@@ -8,3 +22,4 @@
     </div>
   </div>
 <% end %>
+

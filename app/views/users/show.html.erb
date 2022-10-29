@@ -11,9 +11,15 @@
   </aside>
   <div class="col-sm-8">
     <ul class="nav nav-tabs nav-justified mb-3">
-      <li class="nav-item"><a href="#" class="nav-link">Microposts</a></li>
+      <!-- 'active' if current_page?(user_path(@user)) ">は
+      現在のURLが user_path(@user) の場合にはタブの表示を "active" にするコード
+      Bootstrapのタブでは class="active" を付与することで、このタブが今開いているページだとわかりやすく。
+      current_page?は上記の判定に使う
+      -->
+      <li class="nav-item"><a href="<%= user_path(@user) %>" class="nav-link <%= 'active' if current_page?(user_path(@user)) %>">Microposts  <span class="badge bg-secondary"><%= @count_microposts %></span></a></li>
       <li class="nav-item"><a href="#" class="nav-link">Followings</a></li>
       <li class="nav-item"><a href="#" class="nav-link">Followers</a></li>
     </ul>
+    <%= render 'microposts/microposts', microposts: @microposts %>
   </div>
 </div>
