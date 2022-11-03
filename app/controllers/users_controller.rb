@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   #before_action では only: で指定されたアクションに対して、事前処理	
-  before_action :require_user_logged_in, only: [:index, :show]
+  before_action :require_user_logged_in, only: [:index, :show,:followings, :followers]
   def index
     @pagy, @users = pagy(User.order(id: :desc), items: 25)#←ページネーション適応最大1ページに25件。User.order(id: :desc)はIDの降順にユーザー一覧を取得
   end
@@ -25,6 +25,30 @@ class UsersController < ApplicationController
       flash.now[:danger] = 'ユーザの登録に失敗しました。'
       render :new
     end
+  end
+
+  def followings
+    @user = User.find(params[:id])
+    @pagy, @followings = pagy(@user.followings)
+    counts(@user)
+  end
+
+  def followers
+    @user = User.find(params[:id])
+    @pagy, @followers = pagy(@user.followers)
+    counts(@user)
+  end
+  
+  def followings
+    @user = User.find(params[:id])
+    @pagy, @followings = pagy(@user.followings)
+    counts(@user)
+  end
+
+  def followers
+    @user = User.find(params[:id])
+    @pagy, @followers = pagy(@user.followers)
+    counts(@user)
   end
 
   private

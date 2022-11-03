@@ -1,0 +1,21 @@
+<% unless current_user == user %><!--カレントユーザーがユーザーでないとき-->
+  <% if current_user.following?(user) %><!--まだフォローしていれば-->
+    <!--カレントユーザーのリレーションシップテーブルからユーザーiDを探して削除関数を取り付け-->
+    <%= form_with(model: current_user.relationships.find_by(follow_id: user.id), method: :delete) do |f| %>
+      <!--隠しデータ-->
+      <%= hidden_field_tag :follow_id, user.id %>
+      <!--ボタンを作る-->
+      <%= f.submit 'Unfollow', class: 'btn btn-danger w-100' %>
+    <% end %>
+  <% else %>
+   <!--フォローしていないとき
+   カレントユーザーリレーションシップテーブルへbuildでモデルを作っている
+   -->
+    <%= form_with(model: current_user.relationships.build) do |f| %>
+       <!--隠しデータを作る-->
+      <%= hidden_field_tag :follow_id, user.id %>
+      <!--フォローボタンを作る-->
+      <%= f.submit 'Follow', class: 'btn btn-primary w-100' %>
+    <% end %>
+  <% end %>
+<% end %>
