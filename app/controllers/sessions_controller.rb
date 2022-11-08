@@ -29,11 +29,11 @@ class SessionsController < ApplicationController
   def login(email, password)
     @user = User.find_by(email: email)#emailカラムで受け取ったemailがあるか確認
     if @user && @user.authenticate(password)#if @userでユーザーがいるか確認　後半の条件でパスワードがあっているか確認
-      # ログイン成功
+      #ログイン成功
       session[:user_id] = @user.id#ブラウザにはcookieとして、サーバーにはsessionとしてログイン状態が維持される
       return true
     else
-      # ログイン失敗
+      #ログイン失敗
       return false
     end
   end

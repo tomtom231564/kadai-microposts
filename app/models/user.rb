@@ -1,6 +1,7 @@
 class User < ApplicationRecord
-  belongs_to :micropost
-  belongs_to :user
+  belongs_to :micropost,optional: true
+  #belongs_to :user
+  
   before_save { self.email.downcase! }
   validates :name, presence: true, length: { maximum: 50 }#←バリテーション　nameは空はダメ、50文字以内
   validates :email, presence: true, length: { maximum: 255 },#←からは許さない、255文字まで

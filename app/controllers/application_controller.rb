@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  include SessionsHelper  #追記
+  include SessionsHelper#追記
   include Pagy::Backend
   
   private

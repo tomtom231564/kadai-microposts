@@ -8,7 +8,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])#User、モデルのIDをみつける
-     @pagy, @microposts = pagy(@user.microposts.order(id: :desc))
+    @pagy, @microposts = pagy(@user.microposts.order(id: :desc))
     counts(@user)
   end
 
