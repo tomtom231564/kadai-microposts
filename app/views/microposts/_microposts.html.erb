@@ -10,14 +10,22 @@
           <div>
             <p><%= micropost.content %></p>
           </div>
+          <div class='btn-toolbar' role="toolbar">
           <div>
             <% if current_user == micropost.user %>
-              <%= link_to "Delete", micropost, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger btn-sm' %>
+              <%= link_to "Delete", micropost, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger btn-sm' %> 
             <% end %>
           </div>
+            <%= render 'favorites/favorite_button', micropost:micropost %>
+              <%# if current_user.liking(micropost.id) %>
+                <%#= render "microposts/unlike_button", micropost: micropost %>
+              <%# else %>
+                <%#= render "microposts/like_button", micropost: micropost %>
+              <%# end %>
         </div>
       </li>
     <% end %>
   </ul>
+  
   <%== pagy_bootstrap_nav(@pagy) %>
 <% end %>

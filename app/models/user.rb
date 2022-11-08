@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  belongs_to :micropost
+  belongs_to :user
   before_save { self.email.downcase! }
   validates :name, presence: true, length: { maximum: 50 }#←バリテーション　nameは空はダメ、50文字以内
   validates :email, presence: true, length: { maximum: 255 },#←からは許さない、255文字まで
@@ -6,8 +8,9 @@ class User < ApplicationRecord
                     uniqueness: { case_sensitive: false }#←uniquenessは重複を許さない、case_sensitiveは大文字と小文字を区別しない
   has_secure_password
   
-  has_many :microposts#user側から見たときにmicropostsがたくさんあるのでhas_manyとなる
+  has_many :microposts#user側から見たときにmicroposts（発言の一つ一つ）がたくさんあるのでhas_manyとなる
   
+  ###【多対多／follow設定】############################################################
   #userからみてフォローしているuserはたくさんいるのでhas_many※中間テーブルとの関係
   has_many :relationships
   
@@ -25,6 +28,37 @@ class User < ApplicationRecord
   #中間テーブルのuserから見たときにfollowerがおおい
   has_many :followers, through: :reverses_of_relationship, source: :user
   
+  ######【多対多／favorites設定】################################################
+  #ユーザーから見て中間テーブルは
+  has_many:favorites
+  has_many :reverses_of_favorites, class_name: 'Favorite', foreign_key: 'micropost_id'
+  has_many:likings, through: :favorites, source: :micropost#sourceには各モデルに belongs_toで設定した値と合わせる
+  #has_many :followings, through: :relationships, source: :follow
+  
+  
+###########お気に入りの###########################################
+
+  def likeslist
+    self.favorites.all
+  end
+
+  def favorite(other_micropost)
+    #unless favorites.find_by(micropost_id:other_micropost.id)
+    self.favorites.find_or_create_by(micropost_id:other_micropost.id)
+    #end
+  end
+  
+  def unfavorite(other_micropost)
+    favorites = self.favorites.find_by(micropost_id:other_micropost.id)
+    #リレーションシップがあれば、それを削除します。
+    favorites.destroy if favorites
+  end
+  
+  def liking(other_micropost)
+    #def following?(other_user)
+    #self.followings.include?(other_user)
+    self.likings.include?(other_micropost)
+  end
   ##########フォローの関係を手軽に作成したり外したりする################################
   #フォローする
   def follow(other_user)
@@ -53,9 +87,10 @@ class User < ApplicationRecord
     self.followings.include?(other_user)
   end
   
-  def feed_microposts
+  def feed_microposts#フォローしている人たちと自分のIDで検索
     Micropost.where(user_id: self.following_ids + [self.id])
   end
+  
   
 
 end

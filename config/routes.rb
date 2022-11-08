@@ -6,7 +6,6 @@ Rails.application.routes.draw do
   post 'login', to: 'sessions#create'#loginページを作る。コントローラー名はsesson.あとでコントローラーを作る
   delete 'logout', to: 'sessions#destroy'
   
-  
   get 'signup', to: 'users#new'#登録ページをデフォルトのusers/newではなくusers/signupにかえる
  
   #onlyは必要な動作に絞っている。newは違うページ名にしてつくったので作成しない
@@ -16,13 +15,15 @@ Rails.application.routes.draw do
     member do
           get :followings
           get :followers
+          get :likes
     end
     #URLを深堀する場合 /users/search　のようにidが含まれないURLを作成する
     #collection do
       #get :search
     #end
   end
-
+  
   resources :microposts, only: [:create, :destroy]##←必要な動作に絞っている。
   resources :relationships, only: [:create, :destroy]#中間テーブルなのでviewはない
+  resources :favorites, only: [:create, :destroy]#中間テーブルなのでviewはない
 end
