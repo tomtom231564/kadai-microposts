@@ -32,16 +32,16 @@ class User < ApplicationRecord
   ######【多対多／favorites設定】################################################
   #ユーザーから見て中間テーブルは
   has_many:favorites
-  has_many :reverses_of_favorites, class_name: 'Favorite', foreign_key: 'micropost_id'
+  #has_many :reverses_of_favorites, class_name: 'Favorite', foreign_key: 'micropost_id'
   has_many:likings, through: :favorites, source: :micropost#sourceには各モデルに belongs_toで設定した値と合わせる
   #has_many :followings, through: :relationships, source: :follow
   
   
 ###########お気に入りの###########################################
 
-  def likeslist
-    self.favorites.all
-  end
+  #def likeslist
+    #self.favorites.all
+  #end
 
   def favorite(other_micropost)
     #unless favorites.find_by(micropost_id:other_micropost.id)
